@@ -1,0 +1,16 @@
+[
+{
+  "modid": "touchcontrols",
+  "name": "TouchControls",
+  "description": "Touchscreen for PC Minecraft!.",
+  "version": "0.1",
+  "mcversion": "1.8",
+  "url": "http://www.tschrock.net",
+  "updateUrl": "",
+  "authorList": ["Tschrock (tschrock123@gmail.com)"],
+  "credits": "Tschrock (tschrock123@gmail.com)",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
