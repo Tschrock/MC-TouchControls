@@ -1,0 +1,17 @@
+*~
+bin
+build
+eclipse
+gradle
+.classpath
+.gradle
+.project
+.settings
+CREDITS-fml.txt
+forge-*-changelog.txt
+gradlew
+gradlew.bat
+LICENSE-fml.txt
+MinecraftForge-Credits.txt
+MinecraftForge-License.txt
+README.txt

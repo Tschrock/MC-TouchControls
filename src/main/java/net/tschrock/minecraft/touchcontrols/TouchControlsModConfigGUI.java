@@ -9,11 +9,6 @@ public class TouchControlsModConfigGUI extends GuiConfig {
     public TouchControlsModConfigGUI(GuiScreen parent) {
         super(parent,
                 new ConfigElement(TouchControlsMod.configFile.getCategory(Configuration.CATEGORY_GENERAL)).getChildElements(),
-                "tschrock_touchcontrols", false, false, GuiConfig.getAbridgedConfigPath(TouchControlsMod.configFile.toString()));
-    }
-    @Override
-    public void onGuiClosed() {
-    	TouchControlsMod.instance.syncConfig();
-    	super.onGuiClosed();
+                "touchcontrols", false, false, GuiConfig.getAbridgedConfigPath(TouchControlsMod.configFile.toString()));
     }
 }

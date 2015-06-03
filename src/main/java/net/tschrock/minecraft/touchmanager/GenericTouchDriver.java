@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import net.tschrock.minecraft.touchcontrols.DebugHelper;
+import net.tschrock.minecraft.touchcontrols.DebugHelper.LogLevel;
 import net.tschrock.minecraft.touchmanager.TouchEvent.Type;
 
 
@@ -26,25 +28,32 @@ public abstract class GenericTouchDriver extends Thread implements ITouchDriver 
 	
 	protected void onNewEvent(TouchEvent event){
 		
-		//System.out.println(event.getTouchType() + ", " + event.getTouchId() + ", " + event.getTouchX() + ", " + event.getTouchY());
-		
 		if(queueEnabled){
 			eventQueue.add(event);
 		}
 		
-		if(event.touchType == Type.TOUCH_START){
+		if (event.touchType == Type.TOUCH_START) {
+			DebugHelper.log(LogLevel.DEBUG1, "Got 'TOUCH_START' at (" + event.getX() + ", " + event.getY() + ") with id=" + event.getId());
 			currentTouchState.add(event);
 		}
 		else if (event.touchType == Type.TOUCH_UPDATE){
+			DebugHelper.log(LogLevel.DEBUG2, "Got 'TOUCH_UPDATE' at (" + event.getX() + ", " + event.getY() + ") with id=" + event.getId());
 			int index = this.findIndexByTouchId(event.touchId);
 			if(index != -1){
 				currentTouchState.set(index, event);
 			}
+			else {
+				DebugHelper.log(LogLevel.WARNING, "'TOUCH_UPDATE' with id=" + event.getId() + " has no matching start event!");
+			}
 		}
 		else if (event.touchType == Type.TOUCH_END){
+				DebugHelper.log(LogLevel.DEBUG1, "Got 'TOUCH_END' at (" + event.getX() + ", " + event.getY() + ") with id=" + event.getId());
 			int index = this.findIndexByTouchId(event.touchId);
 			if(index != -1){
 				currentTouchState.remove(index);
+			}
+			else {
+				DebugHelper.log(LogLevel.WARNING, "'TOUCH_END' with id=" + event.getId() + " has no matching start event!");
 			}
 		}
 		

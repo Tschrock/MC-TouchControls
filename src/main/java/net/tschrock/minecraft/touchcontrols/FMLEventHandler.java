@@ -44,7 +44,7 @@ public class FMLEventHandler {
 
 	@SubscribeEvent
 	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-		if (eventArgs.modID.equals("tschrock_touchcontrols"))
+		if (eventArgs.modID.equals("touchcontrols"))
 			homeMod.syncConfig();
 	}
 }

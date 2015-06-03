@@ -52,6 +52,7 @@ public class X11TouchDriver extends GenericTouchDriver {
 		running = true;
 		try {
 			procEx = new BinRunner("bin/X11Touch");
+			procEx.logOutput = false;
 			proc = procEx.extractAndRun();
 			procIn = proc.getOutputStream();
 			procOut = proc.getInputStream();

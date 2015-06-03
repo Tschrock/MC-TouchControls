@@ -23,7 +23,9 @@ import net.tschrock.minecraft.gui.events.TouchPadEvent;
 import net.tschrock.minecraft.gui.touch.EmulatedMouseAction.ActionType;
 import net.tschrock.minecraft.gui.touch.EmulatedMouseAction.ClickType;
 import net.tschrock.minecraft.gui.touch.TrackedTouchEvent.TapType;
+import net.tschrock.minecraft.touchcontrols.DebugHelper;
 import net.tschrock.minecraft.touchcontrols.TouchControlsMod;
+import net.tschrock.minecraft.touchcontrols.DebugHelper.LogLevel;
 import net.tschrock.minecraft.touchmanager.TouchEvent;
 import net.tschrock.minecraft.touchmanager.TouchEvent.Type;
 
@@ -86,11 +88,13 @@ public class MCGuiTouchPad extends MCGuiTouchComponent {
 	public void onTouchEvent(TouchEvent event) {
 
 		if (event.getType() == Type.TOUCH_START && !(!this.multitouch && activeTouches.size() > 0)) {
+			DebugHelper.log(LogLevel.DEBUG, "MCGuiTouchpad with id=" + id + " recieved 'TOUCH_START' at (" + event.getX() + ", " + event.getY() + ")~[" + event.getAdjustedX(parentScreen.width) + ", " + event.getAdjustedY(parentScreen.height) + "]");
 			activeTouches.put(event.getId(), new TrackedTouchEvent(event));
 			if (topTouch == -1) {
 				topTouch = event.getId();
 			}
 		} else if (event.getType() == Type.TOUCH_UPDATE) {
+			DebugHelper.log(LogLevel.DEBUG2, "MCGuiTouchpad with id=" + id + " recieved 'TOUCH_UPDATE' at (" + event.getX() + ", " + event.getY() + ")~[" + event.getAdjustedX(parentScreen.width) + ", " + event.getAdjustedY(parentScreen.height) + "]");
 			TrackedTouchEvent evt = activeTouches.get(event.getId());
 			if (evt != null) {
 				evt.addNewEvent(event);
@@ -125,6 +129,7 @@ public class MCGuiTouchPad extends MCGuiTouchComponent {
 		} else if (event.getType() == Type.TOUCH_END) {
 			TrackedTouchEvent evt = activeTouches.get(event.getId());
 			if (evt != null) {
+				DebugHelper.log(LogLevel.DEBUG, "MCGuiTouchpad with id=" + id + " recieved 'TOUCH_END' at (" + event.getX() + ", " + event.getY() + ")~[" + event.getAdjustedX(parentScreen.width) + ", " + event.getAdjustedY(parentScreen.height) + "]");
 				evt.addNewEvent(event);
 
 				// If clickType = unknown

@@ -19,6 +19,7 @@ import net.tschrock.minecraft.gui.touch.MCGuiTouchDPad;
 import net.tschrock.minecraft.gui.touch.MCGuiTouchPad;
 import net.tschrock.minecraft.gui.touch.MCGuiTouchScreen;
 import net.tschrock.minecraft.gui.touch.TrackedTouchEvent;
+import net.tschrock.minecraft.touchcontrols.DebugHelper.LogLevel;
 import net.tschrock.minecraft.touchmanager.TouchEvent;
 import net.tschrock.minecraft.touchmanager.TouchManager;
 
@@ -86,6 +87,7 @@ public class GuiTouchOverlay extends MCGuiTouchScreen implements IMCGuiButtonPus
 
 		TouchEvent nextEvent;
 		while ((nextEvent = TouchManager.getNextTouchEvent()) != null) {
+			DebugHelper.log(LogLevel.DEBUG2, "GuiTouchOverlay: Got touch event, passing to MCGuiTouchScreen.");
 			handleTouchInput(nextEvent);
 		}
 

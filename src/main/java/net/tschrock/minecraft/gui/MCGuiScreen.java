@@ -11,6 +11,8 @@ import org.lwjgl.opengl.Display;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.tschrock.minecraft.gui.events.MCGuiMouseEvent;
+import net.tschrock.minecraft.touchcontrols.DebugHelper;
+import net.tschrock.minecraft.touchcontrols.DebugHelper.LogLevel;
 
 public class MCGuiScreen extends GuiScreen implements IMCGuiContainer {
 
@@ -70,11 +72,9 @@ public class MCGuiScreen extends GuiScreen implements IMCGuiContainer {
 
 		if (overComponent != null && overComponent != focusedComponent) {
 			overComponent.onMouseMove(new MCGuiMouseEvent(x, y));
-			// System.out.println("overComp MouseMove");
 		}
 		if (focusedComponent != null) {
 			focusedComponent.onMouseMove(new MCGuiMouseEvent(x, y));
-			// System.out.println("focusedComp MouseMove");
 		}
 		if (mouseOverComponent != overComponent) {
 			if (mouseOverComponent != null) {
@@ -90,6 +90,7 @@ public class MCGuiScreen extends GuiScreen implements IMCGuiContainer {
 		if (Mouse.getEventButtonState()) // If button was involved and it is pressed (Button down)
 		{
 			if (downedButtons == 0) {
+				DebugHelper.log(LogLevel.DEBUG, "Focus changed to " + overComponent.getClass().getSimpleName() + "with id=" + overComponent.getId());
 				focusedComponent = overComponent;
 			}
 			downedButtons++;

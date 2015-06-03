@@ -5,6 +5,8 @@ import java.util.List;
 import org.lwjgl.LWJGLUtil;
 import org.lwjgl.opengl.Display;
 
+import net.tschrock.minecraft.touchcontrols.DebugHelper;
+import net.tschrock.minecraft.touchcontrols.DebugHelper.LogLevel;
 import net.tschrock.minecraft.touchmanager.drivers.generic.TUIOTouchDriver;
 import net.tschrock.minecraft.touchmanager.drivers.linux.X112TUIOTouchDriver;
 import net.tschrock.minecraft.touchmanager.drivers.linux.X11TouchDriver;
@@ -17,6 +19,10 @@ public class TouchManager {
 
 	private TouchManager() {
 
+	}
+	
+	public static String getCurrentTouchDriver() {
+		return touchDriver.getClass().getSimpleName();
 	}
 
 	public static void init() {
@@ -34,19 +40,24 @@ public class TouchManager {
 	}
 
 	private static ITouchDriver createTouchDriver(boolean useGeneric) {
-		if (useGeneric)
-			return new TUIOTouchDriver();
-
-		switch (LWJGLUtil.getPlatform()) {
-		case LWJGLUtil.PLATFORM_LINUX:
-			return new X112TUIOTouchDriver();
-		case LWJGLUtil.PLATFORM_WINDOWS:
-			return new Touch2TUIOTouchDriver();
-		case LWJGLUtil.PLATFORM_MACOSX:
-			// No touch for OSX :P
-		default:
-			return new TUIOTouchDriver();
+		ITouchDriver driver;
+		if (useGeneric) {
+			driver = new TUIOTouchDriver();
+		} else {
+			switch (LWJGLUtil.getPlatform()) {
+			case LWJGLUtil.PLATFORM_LINUX:
+				driver = new X112TUIOTouchDriver();
+				break;
+			case LWJGLUtil.PLATFORM_WINDOWS:
+				driver = new Touch2TUIOTouchDriver();
+				break;
+			case LWJGLUtil.PLATFORM_MACOSX: // No touch for OSX :P
+			default:
+				driver = new TUIOTouchDriver();
+			}
 		}
+		DebugHelper.log(LogLevel.INFO, "Using '" + driver.getClass().getName() + "' for touch input");
+		return driver;
 	}
 
 	//

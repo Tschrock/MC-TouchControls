@@ -11,7 +11,9 @@ import net.tschrock.minecraft.gui.IMCGuiContainer;
 import net.tschrock.minecraft.gui.MCGuiButton;
 import net.tschrock.minecraft.gui.MCGuiComponent;
 import net.tschrock.minecraft.gui.events.MCGuiMouseEvent;
+import net.tschrock.minecraft.touchcontrols.DebugHelper;
 import net.tschrock.minecraft.touchcontrols.KeyHelper;
+import net.tschrock.minecraft.touchcontrols.DebugHelper.LogLevel;
 import net.tschrock.minecraft.touchmanager.TouchEvent;
 import net.tschrock.minecraft.touchmanager.TouchEvent.Type;
 
@@ -102,14 +104,17 @@ public class MCGuiTouchDPad extends MCGuiTouchComponent {
 
 		if (event.getType() == Type.TOUCH_START) {
 			if (currentTouchEvent == null) {
+				DebugHelper.log(LogLevel.DEBUG, "MCGuiDPad with id=" + id + " recieved 'TOUCH_START' at (" + event.getX() + ", " + event.getY() + ")~[" + event.getAdjustedX(parentScreen.width) + ", " + event.getAdjustedY(parentScreen.height) + "]");
 				currentTouchEvent = event;
 			}
 		} else if (event.getType() == Type.TOUCH_UPDATE) {
 			if (currentTouchEvent != null && currentTouchEvent.getId() == event.getId()) {
+				DebugHelper.log(LogLevel.DEBUG2, "MCGuiDPad with id=" + id + " recieved 'TOUCH_UPDATE' at (" + event.getX() + ", " + event.getY() + ")~[" + event.getAdjustedX(parentScreen.width) + ", " + event.getAdjustedY(parentScreen.height) + "]");
 				currentTouchEvent = event;
 			}
 		} else if (event.getType() == Type.TOUCH_END) {
 			if (currentTouchEvent != null && currentTouchEvent.getId() == event.getId()) {
+				DebugHelper.log(LogLevel.DEBUG, "MCGuiDPad with id=" + id + " recieved 'TOUCH_END' at (" + event.getX() + ", " + event.getY() + ")~[" + event.getAdjustedX(parentScreen.width) + ", " + event.getAdjustedY(parentScreen.height) + "]");
 				currentTouchEvent = null;
 			}
 		}
