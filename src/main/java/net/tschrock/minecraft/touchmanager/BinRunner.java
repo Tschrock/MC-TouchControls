@@ -23,6 +23,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.FilenameUtils;
+
 import net.tschrock.minecraft.touchcontrols.DebugHelper;
 import net.tschrock.minecraft.touchcontrols.DebugHelper.LogLevel;
 
@@ -63,6 +65,7 @@ public class BinRunner {
 	}
 	
 	BinRunner self;
+	File tmpFile;
 
 	public BinRunner(String internalLocation) {
 		this(internalLocation, "");
@@ -73,6 +76,16 @@ public class BinRunner {
 		this.commandArguments = commandArguments;
 
 		self = this;
+		
+
+		Thread closeChildThread = new Thread() {
+			public void run() {
+				self.stop();
+				self.cleanup();
+			}
+		};
+
+		Runtime.getRuntime().addShutdownHook(closeChildThread);
 	}
 
 	String internalLocation;
@@ -137,12 +150,7 @@ public class BinRunner {
 	}
 
 	public void cleanup() {
-		try {
-			Files.deleteIfExists(Paths.get(extractedLocation));
-		} catch (IOException e) {
-			DebugHelper.log(LogLevel.WARNING, "IOExeption while cleaning up '" + extractedLocation + "'");
-			DebugHelper.printTrace(LogLevel.WARNING, e);
-		}
+		tmpFile.delete();
 		extracted = false;
 	}
 
@@ -159,11 +167,14 @@ public class BinRunner {
 
 	private String extractResource(String resourceLocation) throws IOException {
 		InputStream fileInStream = this.getClass().getClassLoader().getResourceAsStream(resourceLocation);
-		File tempFile = File.createTempFile((new File(resourceLocation)).getName(), "");//, Long.toString(System.currentTimeMillis()));
-		tempFile.deleteOnExit();
-		tempFile.setExecutable(true);
-		OutputStream fileOutStream = new FileOutputStream(tempFile);
 		
+		String name = FilenameUtils.getName(resourceLocation);
+		
+		
+		tmpFile = new File(System.getProperty("java.io.tmpdir"), name);
+		tmpFile.deleteOnExit();
+		
+		OutputStream fileOutStream = new FileOutputStream(tmpFile);
 		try {
 			final byte[] buf;
 			int i;
@@ -178,6 +189,6 @@ public class BinRunner {
 			close(fileInStream);
 			close(fileOutStream);
 		}
-		return (tempFile.getAbsolutePath());
+		return (tmpFile.getAbsolutePath());
 	}
 }
